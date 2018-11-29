@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "474563674859",
+    "firebase_url": "https://guysemergencycallingapp-73192.firebaseio.com",
+    "project_id": "guysemergencycallingapp-73192",
+    "storage_bucket": "guysemergencycallingapp-73192.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474563674859:android:c3c1065034ce3069",
+        "android_client_info": {
+          "package_name": "com.a3guys.emergencycallingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "474563674859-9uv8mdqran96crfkt22khj27n1pjv1v0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.a3guys.emergencycallingapp",
+            "certificate_hash": "e29611d4905065dd0dfb3a75e95160a0ed1dcd3c"
+          }
+        },
+        {
+          "client_id": "474563674859-tc0bf4lfbeto3avfnlkk08juk8g8idgr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfjxMVpkjTlVFuDhn7L42NNOGgyIxU1mE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474563674859-tc0bf4lfbeto3avfnlkk08juk8g8idgr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
