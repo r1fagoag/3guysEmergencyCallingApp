@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -64,6 +65,11 @@ public class MainPageActivity extends AppCompatActivity
 
         textViewName.setText(sharedPreferences.getString(Name, "Your Name"));
         textViewEmail.setText(sharedPreferences.getString(Email, "Your Email"));
+
+
+        EmergencyMapFragment emergencyMapFragment = new EmergencyMapFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_map_layout, emergencyMapFragment).commit();
 
 
 

@@ -8,4 +8,17 @@
     tools:context=".MainPageActivity"
     tools:showIn="@layout/app_bar_main_page">
 
+
+    <LinearLayout
+        android:id="@+id/content_map_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
