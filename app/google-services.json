@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "639298876814",
+    "firebase_url": "https://emergency-calling-app.firebaseio.com",
+    "project_id": "emergency-calling-app",
+    "storage_bucket": "emergency-calling-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639298876814:android:c3c1065034ce3069",
+        "android_client_info": {
+          "package_name": "com.a3guys.emergencycallingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639298876814-08hdrukmcvhsl53aebd1qq2knqaotpps.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEEzg5FdA9ww4K_9fdKNdG_uJzpLSHNhQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
