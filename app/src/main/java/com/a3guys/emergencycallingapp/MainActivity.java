@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Button;
 import com.firebase.client.Firebase;
 
+import java.net.URL;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -17,16 +18,18 @@ public class MainActivity extends AppCompatActivity {
     private EditText mValueFieldEmergencyContact;
     private EditText mValueFieldMedicalInformation;
     private Button mAddButton;
-
     private Firebase mRootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        URL url = NetworkUtils.buildUrl("AIzaSyDvtauAMCrK0yGbJwyBrll25KtZAOiAQhQ\n");
+
         //url taken from tutorial video. URL address is preferred, /Users
-        mRootRef = new Firebase("https://fireapp-52967.firebaseio.com/Users");
+        mRootRef = new Firebase("https://emergency-calling-app.firebaseio.com/Users");
 
         mValueFieldFirstName = (EditText) findViewById(R.id.firstName);
         mValueFieldLastName = (EditText) findViewById(R.id.lastName);
