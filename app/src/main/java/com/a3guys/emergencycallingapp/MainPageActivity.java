@@ -31,6 +31,8 @@ public class MainPageActivity extends AppCompatActivity
     TextView textViewName;
     TextView textViewEmail;
 
+    FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +71,7 @@ public class MainPageActivity extends AppCompatActivity
 
 
         EmergencyMapFragment emergencyMapFragment = new EmergencyMapFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_map_layout, emergencyMapFragment).commit();
 
 
@@ -101,7 +103,10 @@ public class MainPageActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_map) {
+            EmergencyMapFragment emergencyMapFragment = new EmergencyMapFragment();
+
+            fragmentManager.beginTransaction().replace(R.id.content_map_layout, emergencyMapFragment).commit();
             return true;
         }
 
@@ -119,24 +124,28 @@ public class MainPageActivity extends AppCompatActivity
         if (id == R.id.nav_lost) {
             // Handle the camera action
 
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            LostFragment lostFragment = new LostFragment();
+
+            fragmentManager.beginTransaction().replace(R.id.content_map_layout, lostFragment).commit();
 
 
         } else if (id == R.id.nav_accident) {
 
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            AccidentFragment accidentFragment = new AccidentFragment();
+
+            fragmentManager.beginTransaction().replace(R.id.content_map_layout, accidentFragment).commit();
 
         } else if (id == R.id.nav_naturaldisaster) {
 
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            DisasterFragment disasterFragment = new DisasterFragment();
+
+            fragmentManager.beginTransaction().replace(R.id.content_map_layout, disasterFragment).commit();
 
         } else if (id == R.id.nav_drunk) {
 
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            DrunkFragment drunkFragment = new DrunkFragment();
+
+            fragmentManager.beginTransaction().replace(R.id.content_map_layout, drunkFragment).commit();
 
         } else if (id == R.id.nav_accountedit) {
 

@@ -19,15 +19,15 @@
         <item
             android:id="@+id/nav_drunk"
             android:icon="@drawable/ic_local_taxi_black_24dp"
-            android:title="Drunk" />
+            android:title="Late Night Out" />
     </group>
 
-    <item android:title="Account Settings">
+    <item android:title="Account Management">
         <menu>
             <item
                 android:id="@+id/nav_accountedit"
                 android:icon="@drawable/ic_settings_black_24dp"
-                android:title="Edit Account" />
+                android:title="Settings" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_backspace_black_24dp"

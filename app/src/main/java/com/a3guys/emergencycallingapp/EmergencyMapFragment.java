@@ -3,8 +3,11 @@ package com.a3guys.emergencycallingapp;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -53,8 +56,6 @@ public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
 
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -62,7 +63,26 @@ public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(this);
             mMap.setOnMyLocationClickListener(this);
+
+
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            Location location = locationManager.getLastKnownLocation(
+                    locationManager.getBestProvider(criteria, false)
+            );
+
+            LatLng mylatlng = new LatLng(location.getLatitude(), location.getLongitude());
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mylatlng,16f));
+
         }
+        else {
+            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        }
+
+
 
 
     }
