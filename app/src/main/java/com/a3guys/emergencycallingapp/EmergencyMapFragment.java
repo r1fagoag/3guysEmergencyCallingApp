@@ -8,10 +8,12 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +37,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 
     private GoogleMap mMap;
+    double lat;
+    double lng;
 
     public EmergencyMapFragment() {
         // Required empty public constructor
@@ -71,9 +79,17 @@ public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback
                     locationManager.getBestProvider(criteria, false)
             );
 
-            LatLng mylatlng = new LatLng(location.getLatitude(), location.getLongitude());
+            lat = location.getLatitude();
+            lng = location.getLongitude();
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mylatlng,16f));
+
+            URL url = NetUtilities.buildPlaceURL(getContext().getString(R.string.PLACES_DIRECT_API_KEY), lat, lng);
+
+            PlacesQueryTask task = new PlacesQueryTask();
+            task.execute(url);
+
+            LatLng mylatlng = new LatLng(lat, lng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mylatlng,11f));
 
         }
         else {
@@ -87,16 +103,63 @@ public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback
 
     }
 
+
+
     @Override
     public boolean onMyLocationButtonClick() {
-        Toast.makeText(getActivity(), "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+ //       Toast.makeText(getActivity(), "MyLocation button clicked", Toast.LENGTH_SHORT).show();
 
         return false;
     }
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
-        Toast.makeText(getActivity(), "Current location:\n" + location, Toast.LENGTH_LONG).show();
+  //      Toast.makeText(getActivity(), "Current location:\n" + location, Toast.LENGTH_LONG).show();
 
     }
+
+
+
+
+
+
+    class PlacesQueryTask extends AsyncTask<URL, Void, String>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected String doInBackground(URL... urls) {
+            String placesSearchResults = "";
+            try {
+                placesSearchResults = NetUtilities.getResponseFromHttpUrl(urls[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return placesSearchResults;
+        }
+        @Override
+        protected void onPostExecute(String s)
+        {
+            super.onPostExecute(s);
+            if (s != null && !s.equals(""))
+            {
+                ArrayList<PlacesItem> places = JsonUtilities.parsePlaces(s);
+
+                for(int i = 0; i < places.size(); i++ )
+                {
+                    PlacesItem place = places.get(i);
+                    LatLng placelatlng = new LatLng(place.getLatitude(), place.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(placelatlng).title(place.getName()));
+                }
+            }
+        }
+    }
+
+
+
+
+
 }
