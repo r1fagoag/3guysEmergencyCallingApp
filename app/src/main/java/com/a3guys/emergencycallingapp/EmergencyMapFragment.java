@@ -27,7 +27,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,7 +50,7 @@ import java.util.concurrent.ExecutionException;
 
  *
  */
-public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
+public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
 
@@ -55,6 +59,8 @@ public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback
 
     static double addresslat;
     static double addresslng;
+
+    List<Polyline> routes = new ArrayList<>();
 
 
     public static final String PREFERENCE_ID = "UserData";
@@ -150,6 +156,8 @@ public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback
                 PlacesQueryTask task = new PlacesQueryTask();
                 task.execute(url);
 
+                mMap.setOnMarkerClickListener(this);
+
 
             }
             else
@@ -157,6 +165,10 @@ public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback
 
                 LatLng addresslatlng = new LatLng(addresslat, addresslng);
                 mMap.addMarker(new MarkerOptions().position(addresslatlng).title("Home"));
+                URL url = NetUtilities.buildDirectURL(getContext().getString(R.string.PLACES_DIRECT_API_KEY), lat, lng, addresslat, addresslng);
+
+                DirectionsQueryTask task = new DirectionsQueryTask();
+                task.execute(url);
             }
 
             LatLng mylatlng = new LatLng(lat, lng);
@@ -192,9 +204,18 @@ public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback
 
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        LatLng markerPosition = marker.getPosition();
+        double destLat = markerPosition.latitude;
+        double destLng = markerPosition.longitude;
 
+        URL url = NetUtilities.buildDirectURL(getContext().getString(R.string.PLACES_DIRECT_API_KEY), lat, lng, destLat, destLng);
 
-
+        DirectionsQueryTask task = new DirectionsQueryTask();
+        task.execute(url);
+        return false;
+    }
 
 
     class PlacesQueryTask extends AsyncTask<URL, Void, String>
@@ -263,6 +284,56 @@ public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback
         }
     }
 
+
+    class DirectionsQueryTask extends AsyncTask<URL, Void, String>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            clearPolylines();
+        }
+        @Override
+        protected String doInBackground(URL... urls) {
+            String directionsSearchResults = "";
+            try {
+                directionsSearchResults = NetUtilities.getResponseFromHttpUrl(urls[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return directionsSearchResults;
+        }
+        @Override
+        protected void onPostExecute(String s)
+        {
+            super.onPostExecute(s);
+            if (s != null && !s.equals(""))
+            {
+                ArrayList<DirectionsItem> directions = JsonUtilities.parseDirections(s);
+
+                for(int i = 0; i < directions.size(); i++ )
+                {
+                    DirectionsItem direction = directions.get(i);
+                    List<LatLng> route = PolyUtil.decode(direction.getEncodedpoly());
+
+                    Polyline polyline = mMap.addPolyline(new PolylineOptions()
+                            .addAll(route));
+
+                    routes.add(polyline);
+
+                }
+            }
+        }
+
+        private void clearPolylines()
+        {
+            for(Polyline route : routes)
+                route.remove();
+
+            routes.clear();
+        }
+
+    }
 
 
 
