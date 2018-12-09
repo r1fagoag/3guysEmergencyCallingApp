@@ -15,8 +15,11 @@ public class MainActivity extends AppCompatActivity {
     public static final String SignedIn = "SignedIn";
     public static final String phoneNumber = "Number";
     public static final String Addressname = "Address";
+    public static final String LocSet = "LocationSet";
 
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
 
     EditText editTextName;
     EditText editTextEmail;
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sharedPreferences = getSharedPreferences(PREFERENCE_ID, MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         editTextName = (EditText) findViewById(R.id.login_name);
         editTextEmail = (EditText) findViewById(R.id.login_email);
@@ -48,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(sharedPreferences.getBoolean(SignedIn, false))
         {
+            editor.putBoolean(LocSet, false);
+
+            editor.commit();
             Intent intent = new Intent(this, MainPageActivity.class);
             startActivity(intent);
         }
@@ -61,13 +68,13 @@ public class MainActivity extends AppCompatActivity {
         String uNumber = editPhoneNumber.getText().toString();
         String uAddress = editAddress.getText().toString();
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(Name, uName);
         editor.putString(Email, uEmail);
         editor.putString(phoneNumber, uNumber);
         editor.putString(Addressname, uAddress);
         editor.putBoolean(SignedIn, true);
+        editor.putBoolean(LocSet, false);
 
         editor.commit();
 

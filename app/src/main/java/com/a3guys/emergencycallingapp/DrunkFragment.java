@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 public class DrunkFragment extends Fragment {
 
     public static final String PREFERENCE_ID = "UserData";
-    public static final String Addressname = "Address";
+    //
 
     SharedPreferences sharedPreferences;
 

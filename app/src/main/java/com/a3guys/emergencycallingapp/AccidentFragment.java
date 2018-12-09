@@ -29,6 +29,8 @@ public class AccidentFragment extends Fragment {
     public static final String PREFERENCE_ID = "UserData";
     public static final String Name = "Name";
     public static final String phoneNumber = "Number";
+    public static final String currentLatitude = "CurrentLatitude";
+    public static final String currentLongitude = "CurrentLongitude";
 
     SharedPreferences sharedPreferences;
 
@@ -52,6 +54,8 @@ public class AccidentFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences(PREFERENCE_ID, Context.MODE_PRIVATE);
         mName = sharedPreferences.getString(Name, "");
         mNumber = sharedPreferences.getString(phoneNumber, "");
+        lat = Double.longBitsToDouble(sharedPreferences.getLong(currentLatitude, 0));
+        lng = Double.longBitsToDouble(sharedPreferences.getLong(currentLongitude, 0));
 
 
         if (!mNumber.isEmpty()) {
@@ -72,38 +76,27 @@ public class AccidentFragment extends Fragment {
                 }
             });
 
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
 
-                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-                Criteria criteria = new Criteria();
-                Location location = locationManager.getLastKnownLocation(
-                        locationManager.getBestProvider(criteria, false)
-                );
 
-                lat = location.getLatitude();
-                lng = location.getLongitude();
+            final String latlngstring = "" + lat + "," + lng;
 
-                final String latlngstring = "" + lat + "," + lng;
+            Button textcontact = view.findViewById(R.id.text_contact);
+            textcontact.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Code here executes on main thread after user presses button
+                    Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + mNumber));
+                    smsIntent.putExtra("sms_body", "It's " + mName
+                            + ". I am in an accident!\n"
+                            + locurl + latlngstring);
 
-                Button textcontact = view.findViewById(R.id.text_contact);
-                textcontact.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        // Code here executes on main thread after user presses button
-                        Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + mNumber));
-                        smsIntent.putExtra("sms_body", "It's " + mName
-                                + ". I am in an accident!\n"
-                                + locurl + latlngstring);
+                    if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS)
+                            != PackageManager.PERMISSION_GRANTED)
+                        return;
 
-                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS)
-                                != PackageManager.PERMISSION_GRANTED)
-                            return;
+                    startActivity(smsIntent);
+                }
+            });
 
-                        startActivity(smsIntent);
-                    }
-                });
-
-            }
         }
 
         return view;
