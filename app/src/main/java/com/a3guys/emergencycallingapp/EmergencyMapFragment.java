@@ -33,6 +33,12 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
+ * import
+ * com.google.maps.android.PolyUtil
+ * in gradle
+ * compile 'com.google.maps.android:android-maps-utils:0.5+'
+
+ *
  */
 public class EmergencyMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
 

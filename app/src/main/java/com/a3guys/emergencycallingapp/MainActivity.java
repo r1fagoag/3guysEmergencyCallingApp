@@ -13,11 +13,15 @@ public class MainActivity extends AppCompatActivity {
     public static final String Name = "Name";
     public static final String Email = "Email";
     public static final String SignedIn = "SignedIn";
+    public static final String phoneNumber = "Number";
+    public static final String Addressname = "Address";
 
     SharedPreferences sharedPreferences;
 
     EditText editTextName;
     EditText editTextEmail;
+    EditText editPhoneNumber;
+    EditText editAddress;
 
 
 
@@ -30,9 +34,14 @@ public class MainActivity extends AppCompatActivity {
 
         editTextName = (EditText) findViewById(R.id.login_name);
         editTextEmail = (EditText) findViewById(R.id.login_email);
+        editPhoneNumber =  (EditText) findViewById(R.id.login_number);
+        editAddress = (EditText) findViewById(R.id.login_address);
+
 
         editTextName.setText(sharedPreferences.getString(Name, "Your Name"));
         editTextEmail.setText(sharedPreferences.getString(Email, "Your Email"));
+        editPhoneNumber.setText(sharedPreferences.getString(phoneNumber, "Your Number"));
+        editAddress.setText(sharedPreferences.getString(Addressname, "Your Address"));
 
 
 
@@ -49,11 +58,15 @@ public class MainActivity extends AppCompatActivity {
 
         String uName = editTextName.getText().toString();
         String uEmail = editTextEmail.getText().toString();
+        String uNumber = editPhoneNumber.getText().toString();
+        String uAddress = editAddress.getText().toString();
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(Name, uName);
         editor.putString(Email, uEmail);
+        editor.putString(phoneNumber, uNumber);
+        editor.putString(Addressname, uAddress);
         editor.putBoolean(SignedIn, true);
 
         editor.commit();
